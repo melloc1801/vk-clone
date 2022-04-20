@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using MySqlConnector;
 using Vk_clone.Dtos;
@@ -12,6 +13,21 @@ namespace Vk_clone.Dal.UserRepository
         public UserRepository(DatabaseConnectionOptions databaseConnectionOptions)
         {
             _databaseConnectionOptions = databaseConnectionOptions;
+        }
+
+        public async Task<bool> FindOneByEmail(string email)
+        {
+            using
+                var conn = new MySqlConnection(_databaseConnectionOptions.ConnectionString);
+            await conn.OpenAsync();
+            
+            var cmd = new MySqlCommand();
+            cmd.Connection = conn;
+            cmd.CommandText = @"SELECT email FROM user WHERE email = @email";
+            cmd.Parameters.AddWithValue("email", email);
+            var rdr = await cmd.ExecuteReaderAsync();
+
+            return rdr.Read();
         }
 
         public async Task<UserModel> CreateUser(CreateUserDto createUserDto)

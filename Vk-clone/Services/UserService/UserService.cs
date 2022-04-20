@@ -10,7 +10,7 @@ namespace Vk_clone.Services
     public class UserService: IUserService
     {
         private readonly IUserRepository _userRepository;
-
+        
         public UserService(IUserRepository userRepository)
         {
             _userRepository = userRepository;
@@ -18,6 +18,15 @@ namespace Vk_clone.Services
         
         public async Task<UserModel> CreateUser(CreateUserDto createUserDto)
         {
+            var candidate = await _userRepository.FindOneByEmail(createUserDto.Email);
+
+            if (candidate)
+            {
+                var exception = new Exception("Email already exists");
+                exception.Data["ErrorCode"] = ErrorCodes.EmailAlreadyExists;
+                throw exception;
+            }
+
             byte[] salt = new byte[128 / 8];
             string hashedPassword = Convert.ToBase64String(KeyDerivation.Pbkdf2(
                 password: createUserDto.Password,

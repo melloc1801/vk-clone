@@ -18,6 +18,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Vk_clone.Dal.TokenRepository;
 using Vk_clone.Dal.UserRepository;
+using Vk_clone.Middleware;
 using Vk_clone.Services;
 using Vk_clone.Services.MailService;
 
@@ -80,6 +81,7 @@ namespace Vk_clone
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Vk_clone v1"));
             }
+            app.UseCustomExceptionHandler();
             app.UseRouting();
             app.UseCors("All");
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });

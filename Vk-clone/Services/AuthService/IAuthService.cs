@@ -8,7 +8,8 @@ namespace Vk_clone.Services
     {
         Task<SignUpResponse> SignUp(CreateUserDto createUserDto);
         void SignIn();
-
         void ConfirmSignUp();
+        void ResetPassword();
+        void Logout();
     }
 }

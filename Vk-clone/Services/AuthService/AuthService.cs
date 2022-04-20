@@ -30,25 +30,30 @@ namespace Vk_clone.Services
         public async Task<SignUpResponse> SignUp(CreateUserDto createUserDto)
         {
             var user = await _userService.CreateUser(createUserDto);
-            var accessToken = _tokenService.GenerateAccessToken(new TokenPayload(user.Id, user.Email));
-            
-            var refreshToken = await _tokenRepository.CreateRefreshToken(
-                _tokenService.GenerateRefreshToken(new TokenPayload(user.Id, user.Email)),
-                user.Id                
-            ); 
+            var (accessToken, refreshToken) = _tokenService.CreateToken(new TokenPayload(user.Id, user.Email));
             _mailService.SendSignUpMessage();
-
+            
             return new SignUpResponse(user.Email, accessToken, refreshToken);
         }
         
         public void SignIn()
         {
-                
+            throw new System.NotImplementedException();
         }
 
         public void ConfirmSignUp()
         {
             throw new System.NotImplementedException();
+        }
+
+        public void ResetPassword()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Logout()
+        {
+            throw new NotImplementedException();
         }
     }
 }

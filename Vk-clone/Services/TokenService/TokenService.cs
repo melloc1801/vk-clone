@@ -17,7 +17,7 @@ namespace Vk_clone.Services
             _configuration = configuration;
         }
         
-        public bool ValidateToken(string token, string secretKey)
+        private bool ValidateToken(string token, string secretKey)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(secretKey);
@@ -37,13 +37,12 @@ namespace Vk_clone.Services
             }
             catch (Exception e)
             {
-                Console.WriteLine("There was error in token validation");
                 return false;
             }
            
             return true;
         }
-        public string GenerateAccessToken(TokenPayload tokenPayload)
+        private string GenerateAccessToken(TokenPayload tokenPayload)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_configuration["Jwt:accessTokenSecretKey"]);
@@ -63,7 +62,7 @@ namespace Vk_clone.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
-        public string GenerateRefreshToken(TokenPayload tokenPayload)
+        private string GenerateRefreshToken(TokenPayload tokenPayload)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_configuration["Jwt:refreshTokenSecretKey"]);
@@ -85,6 +84,12 @@ namespace Vk_clone.Services
             return tokenHandler.WriteToken(token);
         }
 
+        public (string accessToken, string refreshToken) CreateToken(TokenPayload tokenPayload)
+        {
+            var accessToken = GenerateAccessToken(tokenPayload);
+            var refreshToken = GenerateRefreshToken(tokenPayload);
+            return (accessToken, refreshToken);
+        }
         public (string accessToken, string refreshToken) RefreshTokens(TokenPayload tokenPayload)
         {
             var accessToken = GenerateAccessToken(tokenPayload);

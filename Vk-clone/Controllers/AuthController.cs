@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Vk_clone.Dtos;
@@ -11,13 +12,14 @@ namespace Vk_clone.Controllers
     public class UserController : ControllerBase
     {
         private readonly IAuthService _authService;
-
+        
         public UserController(IAuthService authService)
         {
             _authService = authService;
+            
         }
         
-        [HttpPost]
+        [HttpPost("/signup")]
         public async Task<SignUpResponse> SignUp([FromBody] CreateUserDto createUserDto)
         {
             return await _authService.SignUp(createUserDto);

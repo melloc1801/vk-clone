@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Vk_clone.Dtos
 {
-    public class CreateUserDto
+    public class SigninDto
     {
         [Required]
         [EmailAddress]
@@ -13,7 +13,7 @@ namespace Vk_clone.Dtos
         [MaxLength(64)]
         public string Password { get; set; }
 
-        public CreateUserDto(string email, string password)
+        public SigninDto(string email, string password)
         {
             Email = email;
             Password = password;

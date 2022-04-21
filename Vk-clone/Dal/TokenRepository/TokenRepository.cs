@@ -12,7 +12,7 @@ namespace Vk_clone.Dal.TokenRepository
             _databaseConnectionOptions = databaseConnectionOptions;
         }
 
-        public async Task<string> CreateRefreshToken(string token, uint userId)
+        public async Task<string> CreateRefreshToken(uint userId, string token)
         {
             using 
                 var conn = new MySqlConnection(_databaseConnectionOptions.ConnectionString);

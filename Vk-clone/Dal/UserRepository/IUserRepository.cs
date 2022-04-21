@@ -6,8 +6,8 @@ namespace Vk_clone.Dal.UserRepository
 {
     public interface IUserRepository
     {
-        Task<bool> FindOneByEmail(string email);
-        Task<UserModel> CreateUser(CreateUserDto createUserDto);
+        Task<UserModel> FindOneByEmail(string email);
+        Task<UserModel> CreateUser(SignupDto signupDto);
         void GetUser();
         
     }

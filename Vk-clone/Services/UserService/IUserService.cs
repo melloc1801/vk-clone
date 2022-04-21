@@ -6,6 +6,7 @@ namespace Vk_clone.Services
 {
     public interface IUserService
     {
-        Task<UserModel> CreateUser(CreateUserDto createUserDto);
+        Task<UserModel> CreateUser(SignupDto signupDto);
+        Task<UserModel> ValidateUser(SigninDto signinDto);
     }
 }

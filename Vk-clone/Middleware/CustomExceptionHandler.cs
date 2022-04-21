@@ -31,13 +31,17 @@ namespace Vk_clone.Middleware
         private Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             var code = HttpStatusCode.InternalServerError;
-            string message = exception.Message;
+            string message = "Something went wrong";
             string errorCode = HttpStatusCode.InternalServerError.ToString();
 
-            if ((ErrorCodes)exception.Data["ErrorCode"] == ErrorCodes.EmailAlreadyExists)
+            if (exception.Data["ErrorCode"] != null)
             {
-                errorCode = ErrorCodes.EmailAlreadyExists.ToString();
-                code = HttpStatusCode.OK;
+                if ((ErrorCodes)exception.Data["ErrorCode"] == ErrorCodes.EmailAlreadyExists)
+                {
+                    errorCode = ErrorCodes.EmailAlreadyExists.ToString();
+                    message = exception.Message;
+                    code = HttpStatusCode.OK;
+                }    
             }
             
             context.Response.ContentType = "application/json";

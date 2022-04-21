@@ -4,8 +4,8 @@ namespace Vk_clone.Dal.TokenRepository
 {
     public interface ITokenRepository
     {
-        Task<string> CreateRefreshToken(string token, uint userId);
-        Task<string> UpdateRefreshToken(uint id, string token);
-        Task<uint> DeleteRefreshToken(uint id);
+        Task<string> CreateRefreshToken(uint userId, string token);
+        Task<string> UpdateRefreshToken(uint userId, string token);
+        Task<uint> DeleteRefreshToken(uint userId);
     }
 }

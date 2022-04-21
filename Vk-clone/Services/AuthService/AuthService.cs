@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Vk_clone.Dal.TokenRepository;
+using Vk_clone.Dal.UserRepository;
 using Vk_clone.Dtos;
 using Vk_clone.Models;
 using Vk_clone.Services.MailService;
@@ -12,33 +13,35 @@ namespace Vk_clone.Services
         private readonly ITokenService _tokenService;
         private readonly IUserService _userService;
         private readonly IMailService _mailService;
-        private readonly ITokenRepository _tokenRepository;
+        private readonly IUserRepository _userRepository;
         
         public AuthService(
             ITokenService tokenService,
             IUserService userService,
             IMailService mailService,
-            ITokenRepository tokenRepository
+            IUserRepository userRepository
         )
         {
             _tokenService = tokenService;
             _userService = userService;
             _mailService = mailService;
-            _tokenRepository = tokenRepository;
+            _userRepository = userRepository;
         }
         
-        public async Task<SignUpResponse> SignUp(CreateUserDto createUserDto)
+        public async Task<SignupResponse> SignUp(SignupDto signupDto)
         {
-            var user = await _userService.CreateUser(createUserDto);
-            var (accessToken, refreshToken) = _tokenService.CreateToken(new TokenPayload(user.Id, user.Email));
+            var user = await _userService.CreateUser(signupDto);
+            var (accessToken, refreshToken) = await _tokenService.CreateTokens(new TokenPayload(user.Id, user.Email));
             _mailService.SendSignUpMessage();
             
-            return new SignUpResponse(user.Email, accessToken, refreshToken);
+            return new SignupResponse(user.Email, accessToken, refreshToken);
         }
-        
-        public void SignIn()
+
+        public async Task<SigninResponse> SignIn(SigninDto signinDto)
         {
-            throw new System.NotImplementedException();
+            var user = await _userService.ValidateUser(signinDto);
+            var (accessToken, refreshToken) = await _tokenService.UpdateTokens(new TokenPayload(user.Id, user.Email));
+            return new SigninResponse(user.Email, accessToken, refreshToken);
         }
 
         public void ConfirmSignUp()

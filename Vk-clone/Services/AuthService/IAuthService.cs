@@ -6,8 +6,8 @@ namespace Vk_clone.Services
 {
     public interface IAuthService
     {
-        Task<SignUpResponse> SignUp(CreateUserDto createUserDto);
-        void SignIn();
+        Task<SignupResponse> SignUp(SignupDto signupDto);
+        Task<SigninResponse> SignIn(SigninDto signinDto);
         void ConfirmSignUp();
         void ResetPassword();
         void Logout();

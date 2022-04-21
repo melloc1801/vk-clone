@@ -16,29 +16,54 @@ namespace Vk_clone.Services
             _userRepository = userRepository;
         }
         
-        public async Task<UserModel> CreateUser(CreateUserDto createUserDto)
+        public async Task<UserModel> CreateUser(SignupDto signupDto)
         {
-            var candidate = await _userRepository.FindOneByEmail(createUserDto.Email);
+            var candidate = await _userRepository.FindOneByEmail(signupDto.Email);
 
-            if (candidate)
+            if (candidate != null)
+            {
+                var exception = new Exception("Email already exists");
+                exception.Data["ErrorCode"] = ErrorCodes.EmailAlreadyExists;
+                throw exception;
+            }
+            
+            string hashedPassword = hashPassword(signupDto.Password);
+            
+            var user = new SignupDto(signupDto.Email, hashedPassword);
+            return await _userRepository.CreateUser(user);
+        }
+
+        public async Task<UserModel> ValidateUser(SigninDto signinDto)
+        {
+            var candidate = await _userRepository.FindOneByEmail(signinDto.Email);
+            if (candidate == null)
             {
                 var exception = new Exception("Email already exists");
                 exception.Data["ErrorCode"] = ErrorCodes.EmailAlreadyExists;
                 throw exception;
             }
 
+            var hashedPassword = hashPassword(signinDto.Password);
+            if (hashedPassword != candidate.Password)
+            {
+                var exception = new Exception("Email already exists");
+                exception.Data["ErrorCode"] = ErrorCodes.IncorrectPasswordException;
+                throw exception;
+            }
+
+            return candidate;
+        }
+
+        private string hashPassword(string password)
+        {
             byte[] salt = new byte[128 / 8];
-            string hashedPassword = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                password: createUserDto.Password,
+            return Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: password,
                 salt: salt,
                 prf: KeyDerivationPrf.HMACSHA256,
                 iterationCount: 3,
                 numBytesRequested: 256 / 8
             ));
-            
-            var newUserDto = new CreateUserDto(createUserDto.Email, hashedPassword);
-            
-            return await _userRepository.CreateUser(newUserDto);
-        }
+        } 
     }
 }

@@ -1,12 +1,12 @@
 namespace Vk_clone.Models
 {
-    public class SignUpResponse
+    public class SigninResponse
     {
         public string Email { get; }
         public string AccessToken { get; }
         public string RefreshToken { get; }
 
-        public SignUpResponse(string email, string accessToken, string refreshToken)
+        public SigninResponse(string email, string accessToken, string refreshToken)
         {
             Email = email;
             AccessToken = accessToken;

@@ -16,9 +16,9 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Install dependencies
-      run: dotnet restore src/vk-clone/Vk-clone.sln
+      run: dotnet restore vk-clone/Vk-clone.sln
     - name: Build
-      run: dotnet build src/vk-clone/Vk-clone.sln --configuration Release --no-restore 
+      run: dotnet build vk-clone/Vk-clone.sln --configuration Release --no-restore 
     - name: Publish Calabonga.Microservices.Core
       uses: brandedoutcast/publish-nuget@v2.5.2
       with:

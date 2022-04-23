@@ -17,6 +17,7 @@
         <FileVersion>1.0.1.0</FileVersion>
         <AssemblyVersion>1.0.1.0</AssemblyVersion>
         <PackageVersion>1.0.0</PackageVersion>
+        <IsPackable>true</IsPackable>
     </PropertyGroup>
     
     

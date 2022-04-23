@@ -8,7 +8,6 @@
         <Copyright>Spacex SOFT © 2019-2021</Copyright>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageProjectUrl>https://github.com/melloc1801/vk-clone</PackageProjectUrl>
-        <PackageIcon>logo.png</PackageIcon>
         <RepositoryUrl>https://github.com/melloc1801/vk-clone</RepositoryUrl>
         <RepositoryType></RepositoryType>
         <PackageTags>SpaceX, microservice, base, entity, framework, helpers, enum helper</PackageTags>

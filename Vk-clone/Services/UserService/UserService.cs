@@ -2,10 +2,11 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Vk_clone.Dal.UserRepository;
-using Vk_clone.Dtos;
 using Vk_clone.Models;
+using Vk_clone.Services.AuthService.Dto;
+using Vk_clone.Services.UserService.Errors;
 
-namespace Vk_clone.Services
+namespace Vk_clone.Services.UserService
 {
     public class UserService: IUserService
     {
@@ -19,12 +20,9 @@ namespace Vk_clone.Services
         public async Task<UserModel> CreateUser(SignupDto signupDto)
         {
             var candidate = await _userRepository.FindOneByEmail(signupDto.Email);
-
             if (candidate != null)
             {
-                var exception = new Exception("Email already exists");
-                exception.Data["ErrorCode"] = ErrorCodes.EmailAlreadyExists;
-                throw exception;
+                throw new EmailAlreadyExistsError(signupDto.Email);
             }
             
             string hashedPassword = hashPassword(signupDto.Password);
@@ -32,28 +30,22 @@ namespace Vk_clone.Services
             var user = new SignupDto(signupDto.Email, hashedPassword);
             return await _userRepository.CreateUser(user);
         }
-
         public async Task<UserModel> ValidateUser(SigninDto signinDto)
         {
             var candidate = await _userRepository.FindOneByEmail(signinDto.Email);
             if (candidate == null)
             {
-                var exception = new Exception("Email already exists");
-                exception.Data["ErrorCode"] = ErrorCodes.EmailAlreadyExists;
-                throw exception;
+                throw new UserWithEmailNotFoundError(signinDto.Email);
             }
 
             var hashedPassword = hashPassword(signinDto.Password);
             if (hashedPassword != candidate.Password)
             {
-                var exception = new Exception("Email already exists");
-                exception.Data["ErrorCode"] = ErrorCodes.IncorrectPasswordException;
-                throw exception;
+                throw new IncorrectPasswordError();
             }
 
             return candidate;
         }
-
         private string hashPassword(string password)
         {
             byte[] salt = new byte[128 / 8];
@@ -64,6 +56,6 @@ namespace Vk_clone.Services
                 iterationCount: 3,
                 numBytesRequested: 256 / 8
             ));
-        } 
+        }
     }
 }

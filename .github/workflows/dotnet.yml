@@ -19,6 +19,10 @@ jobs:
       run: dotnet restore Vk-clone.sln
     - name: Build
       run: dotnet build Vk-clone.sln --configuration Release --no-restore 
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1.0.5
+    - name: Restore dependencies
+      run: nuget restore $SOLUTION
     - name: Publish vk-clone
       uses: brandedoutcast/publish-nuget@v2.5.2
       with:

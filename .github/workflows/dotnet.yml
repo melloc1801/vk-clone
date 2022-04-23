@@ -16,11 +16,11 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Install dependencies
-      run: dotnet restore vk-clone/Vk-clone.sln
+      run: dotnet restore Vk-clone.sln
     - name: Build
-      run: dotnet build vk-clone/Vk-clone.sln --configuration Release --no-restore 
+      run: dotnet build Vk-clone.sln --configuration Release --no-restore 
     - name: Publish vk-clone
       uses: brandedoutcast/publish-nuget@v2.5.2
       with:
-          PROJECT_FILE_PATH: vk-clone/Vk-clone/Vk-clone.csproj
+          PROJECT_FILE_PATH: Vk-clone/Vk-clone.csproj
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}

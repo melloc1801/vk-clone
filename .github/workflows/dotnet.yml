@@ -1,0 +1,26 @@
+name: .NET Core
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Install dependencies
+      run: dotnet restore src/vk-clone/Vk-clone.sln
+    - name: Build
+      run: dotnet build src/vk-clone/Vk-clone.sln --configuration Release --no-restore 
+    - name: Publish Calabonga.Microservices.Core
+      uses: brandedoutcast/publish-nuget@v2.5.2
+      with:
+          PROJECT_FILE_PATH: src/vk-clone/Vk-clone/Vk-clone.csproj
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}

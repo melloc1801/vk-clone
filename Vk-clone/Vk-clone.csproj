@@ -1,11 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
-        <RootNamespace>Vk_clone</RootNamespace>
+        <TargetFrameworks>net5.0</TargetFrameworks>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Authors>Melloc1801</Authors>
+        <Company>SpaceX</Company>
+        <Description>Some helpers for Microservices. All microservices in the system should and can use Unit of Work pattern. This package implements this pattern.</Description>
+        <Copyright>Spacex SOFT © 2019-2021</Copyright>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/melloc1801/vk-clone</PackageProjectUrl>
+        <PackageIcon>logo.png</PackageIcon>
+        <RepositoryUrl>https://github.com/melloc1801/vk-clone</RepositoryUrl>
+        <RepositoryType></RepositoryType>
+        <PackageTags>SpaceX, microservice, base, entity, framework, helpers, enum helper</PackageTags>
+        <PackageReleaseNotes>Task extensions added for WhenAll()</PackageReleaseNotes>
         <Version>1.0.0</Version>
+        <FileVersion>1.0.1.0</FileVersion>
+        <AssemblyVersion>1.0.1.0</AssemblyVersion>
         <PackageVersion>1.0.0</PackageVersion>
     </PropertyGroup>
+    
+    
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.7" />
@@ -14,3 +28,4 @@
     </ItemGroup>
 
 </Project>
+

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Vk_clone.Dal.TokenRepository;
 using Vk_clone.Models;
 
-namespace Vk_clone.Services
+namespace Vk_clone.Services.TokenService
 {
     public class TokenService: ITokenService
     {

@@ -1,26 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Vk_clone.Dal.TokenRepository;
 using Vk_clone.Dal.UserRepository;
 using Vk_clone.Middleware;
-using Vk_clone.Services;
+using Vk_clone.Services.AuthService;
 using Vk_clone.Services.MailService;
+using Vk_clone.Services.TokenService;
+using Vk_clone.Services.UserService;
 
 namespace Vk_clone
 {
@@ -72,11 +64,11 @@ namespace Vk_clone
             {
                 options.TokenValidationParameters = new TokenValidationParameters
                 { };
-            });;
+            });
 
             services.AddSingleton(sp => new DatabaseConnectionOptions(sp
                 .GetService<IConfiguration>()
-                .GetSection("DatabaseConnectionsOptions")
+                ?.GetSection("DatabaseConnectionsOptions")
                 .GetValue<string>("ConnectionString"))
             );
             services.AddSingleton<IAuthService, AuthService>();

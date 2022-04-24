@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
-using Vk_clone.Dtos;
 using Vk_clone.Models;
+using Vk_clone.Services.AuthService.Dto;
 
 namespace Vk_clone.Dal.UserRepository
 {

@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using NLog;
+using NLog.Web;
 
 namespace Vk_clone.Errors.Request
 {
@@ -7,6 +10,8 @@ namespace Vk_clone.Errors.Request
     {
         public static void Main(string[] args)
         {
+            var logger = NLog.LogManager.Setup().RegisterNLogWeb().GetCurrentClassLogger();
+            logger.Debug("Init main");
             CreateHostBuilder(args).Build().Run();
         }
 
@@ -14,7 +19,12 @@ namespace Vk_clone.Errors.Request
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseStartup<Startup>().ConfigureLogging(logging =>
+                        {
+                            logging.ClearProviders();
+                            logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+                        })
+                        .UseNLog();
                 });
     }
 }

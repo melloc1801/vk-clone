@@ -73,8 +73,7 @@ namespace Vk_clone.Errors.Request
                 option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options =>
             {
-                options.TokenValidationParameters = new TokenValidationParameters
-                { };
+                options.TokenValidationParameters = new TokenValidationParameters { };
             });
 
             services.AddSingleton(sp => new DatabaseConnectionOptions(sp

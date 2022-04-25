@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 
-namespace Vk_clone.Errors.Request.Middleware
+namespace Vk_clone.Errors.Request.Middleware.CustomExceptionHandler
 {
     public static class CustomExceptionHandlerExtensions
     {

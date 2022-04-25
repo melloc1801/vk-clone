@@ -65,8 +65,6 @@ namespace Vk_clone.Errors.Request
                     }
                 });
             });
-
-
             services.AddAuthentication(option =>
             {
                 option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

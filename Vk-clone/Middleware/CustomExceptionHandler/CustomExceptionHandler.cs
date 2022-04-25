@@ -4,11 +4,8 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using NLog;
-using NLog.Web;
-using Vk_clone.Errors.Request;
 
-namespace Vk_clone.Errors.Request.Middleware
+namespace Vk_clone.Errors.Request.Middleware.CustomExceptionHandler
 {
     public class CustomExceptionHandler
     {
@@ -23,15 +20,15 @@ namespace Vk_clone.Errors.Request.Middleware
 
         public async Task Invoke(HttpContext context)
         {
-            var logger = _loggerFactory.CreateLogger<CustomExceptionHandler>();
+            // var logger = _loggerFactory.CreateLogger<CustomExceptionHandler>();
             try
             {
-                await _next(context);
+                _next(context);
             }
             catch (Exception exception)
             {
-                logger.LogError(exception, exception.Message);
                 await HandleExceptionAsync(context, exception);
+                // logger.LogError(exception, exception.Message);
             }
         }
 

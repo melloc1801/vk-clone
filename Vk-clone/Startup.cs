@@ -1,20 +1,23 @@
+using System.Net.Mime;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Vk_clone.Dal.TokenRepository;
-using Vk_clone.Dal.UserRepository;
-using Vk_clone.Middleware;
-using Vk_clone.Services.AuthService;
-using Vk_clone.Services.MailService;
-using Vk_clone.Services.TokenService;
-using Vk_clone.Services.UserService;
+using Vk_clone.Errors.Request.Dal.TokenRepository;
+using Vk_clone.Errors.Request.Dal.UserRepository;
+using Vk_clone.Errors.Request.Services.AuthService;
+using Vk_clone.Errors.Request.Services.MailService;
+using Vk_clone.Errors.Request.Services.TokenService;
+using Vk_clone.Errors.Request.Services.UserService;
+using Vk_clone.Errors.Response;
+using Vk_clone.Errors.Request.Middleware;
 
-namespace Vk_clone
+namespace Vk_clone.Errors.Request
 {
     public class Startup
     {
@@ -27,7 +30,15 @@ namespace Vk_clone
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().ConfigureApiBehaviorOptions(options =>
+            {
+                options.InvalidModelStateResponseFactory = context =>
+                {
+                    var result = new ValidationFailedResponse(context.ModelState);
+                    result.ContentTypes.Add(MediaTypeNames.Application.Json);
+                    return result;
+                };
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "Vk_clone", Version = "v1"});

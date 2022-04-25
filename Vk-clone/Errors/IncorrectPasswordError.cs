@@ -1,6 +1,6 @@
 using System;
 
-namespace Vk_clone.Services.UserService.Errors
+namespace Vk_clone.Errors
 {
     public class IncorrectPasswordError: Exception
     {

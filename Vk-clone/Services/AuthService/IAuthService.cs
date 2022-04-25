@@ -1,14 +1,12 @@
 using System.Threading.Tasks;
-using Vk_clone.Services.AuthService.Dto;
-using Vk_clone.Services.AuthService.Types;
-using Vk_clone.Types;
+using Vk_clone.Errors.Request;
 
-namespace Vk_clone.Services.AuthService
+namespace Vk_clone.Errors.Request.Services.AuthService
 {
     public interface IAuthService
     {
-        Task<ResponseType<AuthResponseInfo>> SignUp(SignupDto signupDto);
-        Task<ResponseType<AuthResponseInfo>> SignIn(SigninDto signinDto);
+        Task<ResponseType<AuthResponseInfo>> SignUp(SignupRequest signupRequest);
+        Task<ResponseType<AuthResponseInfo>> SignIn(SigninRequest signinRequest);
         void ConfirmSignUp();
         void ResetPassword();
         void Logout();

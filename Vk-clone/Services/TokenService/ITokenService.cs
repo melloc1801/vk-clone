@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
-using Vk_clone.Models;
+using Vk_clone.Errors.Request;
 
-namespace Vk_clone.Services.TokenService
+namespace Vk_clone.Errors.Request.Services.TokenService
 {
     public interface ITokenService
     {

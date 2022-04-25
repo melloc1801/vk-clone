@@ -1,4 +1,4 @@
-namespace Vk_clone.Services.UserService.Errors
+namespace Vk_clone.Errors
 {
     public enum UserErrorCodes
     {

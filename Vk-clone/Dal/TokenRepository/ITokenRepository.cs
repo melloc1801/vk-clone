@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace Vk_clone.Dal.TokenRepository
+namespace Vk_clone.Errors.Request.Dal.TokenRepository
 {
     public interface ITokenRepository
     {

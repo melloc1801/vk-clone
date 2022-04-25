@@ -1,9 +1,8 @@
 using System.Threading.Tasks;
 using MySqlConnector;
-using Vk_clone.Models;
-using Vk_clone.Services.AuthService.Dto;
+using Vk_clone.Errors.Request;
 
-namespace Vk_clone.Dal.UserRepository
+namespace Vk_clone.Errors.Request.Dal.UserRepository
 {
     public class UserRepository : IUserRepository
     {
@@ -32,7 +31,7 @@ namespace Vk_clone.Dal.UserRepository
             return null;
         }
 
-        public async Task<UserModel> CreateUser(SignupDto signupDto)
+        public async Task<UserModel> CreateUser(SignupRequest signupRequest)
         {
             using
                 var conn = new MySqlConnection(_databaseConnectionOptions.ConnectionString);
@@ -41,8 +40,8 @@ namespace Vk_clone.Dal.UserRepository
             var cmd = new MySqlCommand();
             cmd.Connection = conn;
             cmd.CommandText = @"INSERT INTO user (email, passwordHash) VALUES (@email, @passwordHash)";
-            cmd.Parameters.AddWithValue("email", signupDto.Email);
-            cmd.Parameters.AddWithValue("passwordHash", signupDto.Password);
+            cmd.Parameters.AddWithValue("email", signupRequest.Email);
+            cmd.Parameters.AddWithValue("passwordHash", signupRequest.Password);
             cmd.ExecuteNonQuery();
             
             cmd.CommandText = @"SELECT * FROM user WHERE email = @email";

@@ -1,4 +1,4 @@
-namespace Vk_clone.Services.AuthService.Types
+namespace Vk_clone.Errors.Request
 {
     public class AuthResponseInfo
     {

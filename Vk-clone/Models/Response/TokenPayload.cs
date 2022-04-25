@@ -1,4 +1,4 @@
-namespace Vk_clone.Models
+namespace Vk_clone.Errors.Request
 {
     public class TokenPayload
     {

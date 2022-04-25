@@ -1,11 +1,10 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Vk_clone.Services.AuthService;
-using Vk_clone.Services.AuthService.Dto;
-using Vk_clone.Services.AuthService.Types;
-using Vk_clone.Types;
+using Vk_clone.Errors.Request.Services.AuthService;
+using Vk_clone.Errors.Request;
 
-namespace Vk_clone.Controllers
+namespace Vk_clone.Errors.Request.Controllers
 {
     [ApiController]
     [Route("/auth")]
@@ -19,15 +18,15 @@ namespace Vk_clone.Controllers
         }
         
         [HttpPost("/signup")]
-        public async Task<ResponseType<AuthResponseInfo>> SignUp([FromBody] SignupDto signupDto)
+        public async Task<ResponseType<AuthResponseInfo>> SignUp(SignupRequest signupRequest)
         {
-            return await _authService.SignUp(signupDto);
+            return await _authService.SignUp(signupRequest);
         }
 
         [HttpPost("/signin")]
-        public async Task<ResponseType<AuthResponseInfo>> SignIn([FromBody] SigninDto signinDto)
+        public async Task<ResponseType<AuthResponseInfo>> SignIn([FromBody] SigninRequest signinRequest)
         {
-            return await _authService.SignIn(signinDto);
+            return await _authService.SignIn(signinRequest);
         }
     }
 }

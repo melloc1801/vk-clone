@@ -1,15 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using Vk_clone.Models;
-using Vk_clone.Services.AuthService.Dto;
-using Vk_clone.Services.AuthService.Types;
-using Vk_clone.Services.MailService;
-using Vk_clone.Services.TokenService;
-using Vk_clone.Services.UserService;
-using Vk_clone.Services.UserService.Errors;
-using Vk_clone.Types;
+using Vk_clone.Errors.Request.Services.MailService;
+using Vk_clone.Errors.Request.Services.TokenService;
+using Vk_clone.Errors.Request.Services.UserService;
 
-namespace Vk_clone.Services.AuthService
+namespace Vk_clone.Errors.Request.Services.AuthService
 {
     public class AuthService: IAuthService
     {
@@ -28,11 +23,11 @@ namespace Vk_clone.Services.AuthService
             _mailService = mailService;
         }
         
-        public async Task<ResponseType<AuthResponseInfo>>SignUp(SignupDto signupDto)
+        public async Task<ResponseType<AuthResponseInfo>>SignUp(SignupRequest signupRequest)
         {
             try
             {
-                var user = await _userService.CreateUser(signupDto);
+                var user = await _userService.CreateUser(signupRequest);
                 var (accessToken, refreshToken) = await _tokenService.CreateTokens(new TokenPayload(user.Id, user.Email));
                 _mailService.SendSignUpMessage();
                 
@@ -40,19 +35,20 @@ namespace Vk_clone.Services.AuthService
             }
             catch (Exception exception)
             {
-                string errorCode = null;
+                string errorField = null;
                 switch (exception)
                 {
-                    case EmailAlreadyExistsError emailAlreadyExistsError:
+                    case EmailAlreadyExistsError:
                     {
-                        errorCode = UserErrorCodes.EmailAlreadyExists.ToString();
+                        errorField = nameof(signupRequest.Email).ToLower();
                         break;
                     }
                 }
                 
-                if (errorCode != null)
+                if ( errorField != null)
                 {
-                    return ResponseType<AuthResponseInfo>.Create(new [] {errorCode});
+                    var error = new ErrorFieldResponse(exception.Message, errorField);
+                    return ResponseType<AuthResponseInfo>.Create("Invalid data error", new [] {error});
                 }
                 
                 
@@ -60,34 +56,35 @@ namespace Vk_clone.Services.AuthService
             }
         }
 
-        public async Task<ResponseType<AuthResponseInfo>> SignIn(SigninDto signinDto)
+        public async Task<ResponseType<AuthResponseInfo>> SignIn(SigninRequest signinRequest)
         {
             try
             {
-                var user = await _userService.ValidateUser(signinDto);
+                var user = await _userService.ValidateUser(signinRequest);
                 var (accessToken, refreshToken) = await _tokenService.UpdateTokens(new TokenPayload(user.Id, user.Email));
                 return ResponseType<AuthResponseInfo>.Create(new AuthResponseInfo(accessToken, refreshToken));
             }
             catch (Exception exception)
             {
-                string errorCode = null;
+                string errorField = null;
                 switch (exception)
                 {
-                    case UserWithEmailNotFoundError userWithEmailNotFoundError:
+                    case UserWithEmailNotFoundError:
                     {
-                        errorCode = UserErrorCodes.UserWithEmailNotFound.ToString();
+                        errorField = nameof(signinRequest.Email).ToLower();
                         break;
                     }
-                    case IncorrectPasswordError incorrectPasswordError:
+                    case IncorrectPasswordError:
                     {
-                        errorCode = UserErrorCodes.IncorrectPassword.ToString();
+                        errorField = nameof(signinRequest.Password).ToLower();
                         break;
                     }
                 }
 
-                if (errorCode != null)
+                if (errorField != null)
                 {
-                    return ResponseType<AuthResponseInfo>.Create(new [] {errorCode});
+                    var error = new ErrorFieldResponse(exception.Message, errorField);
+                    return ResponseType<AuthResponseInfo>.Create("Invalid data error", new [] {error});
                 }
                 throw exception;
             }

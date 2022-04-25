@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Vk_clone.Services.AuthService.Dto
+namespace Vk_clone.Errors.Request
 {
-    public class SignupDto
+    public class SignupRequest
     {
         [Required]
         [EmailAddress]
@@ -13,7 +13,7 @@ namespace Vk_clone.Services.AuthService.Dto
         [MaxLength(64)]
         public string Password { get; set; }
 
-        public SignupDto(string email, string password)
+        public SignupRequest(string email, string password)
         {
             Email = email;
             Password = password;

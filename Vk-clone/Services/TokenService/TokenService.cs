@@ -5,10 +5,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Vk_clone.Dal.TokenRepository;
-using Vk_clone.Models;
+using Vk_clone.Errors.Request.Dal.TokenRepository;
+using Vk_clone.Errors.Request;
 
-namespace Vk_clone.Services.TokenService
+namespace Vk_clone.Errors.Request.Services.TokenService
 {
     public class TokenService: ITokenService
     {

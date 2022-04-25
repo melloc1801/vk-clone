@@ -1,12 +1,9 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using Vk_clone.Dal.UserRepository;
-using Vk_clone.Models;
-using Vk_clone.Services.AuthService.Dto;
-using Vk_clone.Services.UserService.Errors;
+using Vk_clone.Errors.Request.Dal.UserRepository;
 
-namespace Vk_clone.Services.UserService
+namespace Vk_clone.Errors.Request.Services.UserService
 {
     public class UserService: IUserService
     {
@@ -17,28 +14,28 @@ namespace Vk_clone.Services.UserService
             _userRepository = userRepository;
         }
         
-        public async Task<UserModel> CreateUser(SignupDto signupDto)
+        public async Task<UserModel> CreateUser(SignupRequest signupRequest)
         {
-            var candidate = await _userRepository.FindOneByEmail(signupDto.Email);
+            var candidate = await _userRepository.FindOneByEmail(signupRequest.Email);
             if (candidate != null)
             {
-                throw new EmailAlreadyExistsError(signupDto.Email);
+                throw new EmailAlreadyExistsError(signupRequest.Email);
             }
             
-            string hashedPassword = hashPassword(signupDto.Password);
+            string hashedPassword = hashPassword(signupRequest.Password);
             
-            var user = new SignupDto(signupDto.Email, hashedPassword);
+            var user = new SignupRequest(signupRequest.Email, hashedPassword);
             return await _userRepository.CreateUser(user);
         }
-        public async Task<UserModel> ValidateUser(SigninDto signinDto)
+        public async Task<UserModel> ValidateUser(SigninRequest signinRequest)
         {
-            var candidate = await _userRepository.FindOneByEmail(signinDto.Email);
+            var candidate = await _userRepository.FindOneByEmail(signinRequest.Email);
             if (candidate == null)
             {
-                throw new UserWithEmailNotFoundError(signinDto.Email);
+                throw new UserWithEmailNotFoundError(signinRequest.Email);
             }
 
-            var hashedPassword = hashPassword(signinDto.Password);
+            var hashedPassword = hashPassword(signinRequest.Password);
             if (hashedPassword != candidate.Password)
             {
                 throw new IncorrectPasswordError();

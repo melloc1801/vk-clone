@@ -3,10 +3,9 @@ using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Vk_clone.Services.AuthService.Types;
-using Vk_clone.Types;
+using Vk_clone.Errors.Request;
 
-namespace Vk_clone.Middleware
+namespace Vk_clone.Errors.Request.Middleware
 {
     public class CustomExceptionHandler
     {
@@ -33,8 +32,8 @@ namespace Vk_clone.Middleware
         {
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            
-            var result = JsonSerializer.Serialize(ResponseType<AuthResponseInfo>.Create(new []{exception.Message}));
+
+            var result = JsonSerializer.Serialize(ResponseType<object>.Create(exception.Message, null));
             return context.Response.WriteAsync(result);
         }
     }

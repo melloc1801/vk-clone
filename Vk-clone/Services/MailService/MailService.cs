@@ -1,4 +1,4 @@
-namespace Vk_clone.Services.MailService
+namespace Vk_clone.Errors.Request.Services.MailService
 {
     public class MailService: IMailService
     {
